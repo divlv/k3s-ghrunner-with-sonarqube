@@ -1,0 +1,27 @@
+# sonardata-pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonardata-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes: [ ReadWriteOnce ]
+  storageClassName: manual
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /data/sonarqube        # host dir
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonar-data
+  namespace: sonarqube
+spec:
+  storageClassName: manual
+  volumeName: sonardata-pv
+  accessModes: [ ReadWriteOnce ]
+  resources:
+    requests:
+      storage: 10Gi
