@@ -1,0 +1,89 @@
+#
+# Namespace (skip if it already exists)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: githubrunner
+---
+#
+# Basic secrets for Github runner
+# Replace the values with your own secrets:
+# echo -n 'admin' | base64        # YWRtaW4=
+# etc.
+#
+apiVersion: v1
+kind: Secret
+metadata:
+  name: githubrunner-secret
+  namespace: githubrunner
+  labels:
+    app: trm-runner-1
+type: Opaque
+data:
+  REPO_URL: xx_place_your_base64_secret_here_xx==
+  ACCESS_TOKEN: xx_place_your_base64_secret_here_xx==
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trm-runner-1
+  namespace: githubrunner
+  labels:
+    app: trm-runner-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trm-runner-1
+  template:
+    metadata:
+      labels:
+        app: trm-runner-1
+    spec:
+      # Allow access to the host Docker socket
+      securityContext:
+        fsGroup: 0
+      containers:
+        - name: github-runner
+          image: myoung34/github-runner:latest
+          securityContext:
+            privileged: true # needed for docker-in-docker via host socket
+          env:
+            - name: REPO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: githubrunner-secret
+                  key: REPO_URL
+            - name: ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: githubrunner-secret
+                  key: ACCESS_TOKEN
+            - name: RUNNER_NAME_PREFIX
+              value: trm-runner
+            - name: DISABLE_AUTO_UPDATE
+              value: "1"
+            - name: RUNNER_WORKDIR
+              value: /_work
+            - name: LABELS
+              value: docker,trm
+          volumeMounts:
+            - name: docker-sock
+              mountPath: /var/run/docker.sock # host Docker socket
+            - name: runner-logs
+              mountPath: /root/.npm/_logs # keep NPM logs on host
+            - name: workdir
+              mountPath: /_work # runner workdir on host
+      volumes:
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+            type: Socket
+        - name: runner-logs
+          hostPath:
+            path: /data/runner_logs
+            type: DirectoryOrCreate
+        - name: workdir
+          hostPath:
+            path: /opt/githubrunner/config
+            type: DirectoryOrCreate
