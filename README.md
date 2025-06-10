@@ -41,8 +41,22 @@ k3s kubectl create namespace sonarqube
 
 ### Sonarqube: prepare directories
 ```bash
-mkdir -p /data/postgres; chmod 777 /data/postgres; mkdir -p /data/sonarqube; chmod 777 /data/sonarqube;
+mkdir -p /data/postgres; chmod 777 /data/postgres; mkdir -p /data/sonarqube; chmod 777 /data/sonarqube; mkdir -p /data/sonarqube/cbp/plugins; chmod 777 /data/sonarqube/cbp/plugins; mkdir -p /data/sonarqube/cbp/web; chmod 777 /data/sonarqube/cbp/web
 ```
+
+### Sonarqube: Integration plugins
+
+Unpack the Sonarqube Community Branch Plugin and Sonarqube Webapp plugin:
+
+```bash
+sudo cp sonarqube-community-branch-plugin-25.5.0.jar /data/sonarqube/cbp/plugins/
+
+sudo unzip -q sonarqube-webapp.zip -d /data/sonarqube/cbp/web
+```
+
+
+
+
 
 ### Sonarqube: apply commands (to be refined)
 
