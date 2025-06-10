@@ -49,19 +49,18 @@ spec:
           volumeMounts:
             - name: sonar-data
               mountPath: /opt/sonarqube/data
+            # JAR-plugin: Community Branch Plugin
+            - name: sonar-data
+              mountPath: /opt/sonarqube/extensions/plugins
+              subPath: cbp/plugins # the folder with the JAR file of the plugin
+            # Patched Web frontend:
+            - name: sonar-data
+              mountPath: /opt/sonarqube/web
+              subPath: cbp/web # the folder with the extracted patched web frontend
       volumes:
         - name: sonar-data
           persistentVolumeClaim:
             claimName: sonar-data
-        # JAR-plugin: Community Branch Plugin
-        - name: sonar-data
-          mountPath: /opt/sonarqube/extensions/plugins
-          subPath: cbp/plugins # the folder with the JAR file of the plugin
-        # Patched Web frontend:
-        - name: sonar-data
-          mountPath: /opt/sonarqube/web
-          subPath: cbp/web # the folder with the extracted patched web frontend
-
 ---
 apiVersion: v1
 kind: Service
