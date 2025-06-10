@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Finding SonarQUbe logs:"
+echo "kubectl -n sonarqube logs $(kubectl -n sonarqube get pods -l app=sonarqube -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow"
+echo "---"
+
+kubectl -n sonarqube logs $(kubectl -n sonarqube get pods -l app=sonarqube -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow
