@@ -39,6 +39,12 @@ spec:
                 }
             - name: SONAR_ES_BOOTSTRAP_CHECKS_DISABLE
               value: "true"
+            # 2 Java agents for the Community Branch Plugin:
+            - name: SONAR_WEB_JAVAADDITIONALOPTS
+              value: "-javaagent:/opt/sonarqube/extensions/plugins/sonarqube-community-branch-plugin-25.5.0.jar=web"
+            - name: SONAR_CE_JAVAADDITIONALOPTS
+              value: "-javaagent:/opt/sonarqube/extensions/plugins/sonarqube-community-branch-plugin-25.5.0.jar=ce"
+
           ports: [{ containerPort: 9000 }]
           volumeMounts:
             - name: sonar-data
@@ -47,6 +53,15 @@ spec:
         - name: sonar-data
           persistentVolumeClaim:
             claimName: sonar-data
+        # JAR-plugin: Community Branch Plugin
+        - name: sonar-data
+          mountPath: /opt/sonarqube/extensions/plugins
+          subPath: cbp/plugins # the folder with the JAR file of the plugin
+        # Patched Web frontend:
+        - name: sonar-data
+          mountPath: /opt/sonarqube/web
+          subPath: cbp/web # the folder with the extracted patched web frontend
+
 ---
 apiVersion: v1
 kind: Service

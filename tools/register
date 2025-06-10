@@ -1,0 +1,32 @@
+#!/bin/bash
+
+echo "###################################################################"
+echo "Registering K3S helper tools..."
+echo "###################################################################"
+
+# Don't forget to make the scripts executable via GIT: git add --chmod=+x k3ssonarqubelogs
+# Cleanup part:
+
+# Cleanup the old symbolic links if they exist
+rm -f /usr/bin/sl
+rm -f /usr/bin/tl
+rm -f /usr/bin/gl
+
+# Cleanup the old script if it exists
+rm -f /usr/bin/k3ssonarqubelogs
+rm -f /usr/bin/k3straefiklogs
+rm -f /usr/bin/k3sghrunnerlogs
+
+#################################################
+
+# Create part:
+
+# Copy the new scripts to the /usr/bin directory
+cp k3ssonarqubelogs /usr/bin/k3ssonarqubelogs
+cp k3straefiklogs /usr/bin/k3straefiklogs
+cp k3sghrunnerlogs /usr/bin/k3sghrunnerlogs
+
+# Create symbolic links for the scripts
+ln -s /usr/bin/k3ssonarqubelogs /usr/bin/sl
+ln -s /usr/bin/k3straefiklogs /usr/bin/tl
+ln -s /usr/bin/k3sghrunnerlogs /usr/bin/gl

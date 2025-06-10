@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Finding Traefik logs: ###########################################"
+echo "kubectl -n kube-system logs $(kubectl -n kube-system get pods -l app.kubernetes.io/name=traefik -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow"
+echo "###################################################################"
+
+kubectl -n kube-system logs $(kubectl -n kube-system get pods -l app.kubernetes.io/name=traefik -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow

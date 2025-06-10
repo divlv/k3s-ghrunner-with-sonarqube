@@ -54,6 +54,13 @@ sudo cp sonarqube-community-branch-plugin-25.5.0.jar /data/sonarqube/cbp/plugins
 sudo unzip -q sonarqube-webapp.zip -d /data/sonarqube/cbp/web
 ```
 
+Also, apply necessary permissions to the plugins:
+
+```bash
+chown -R 1000:1000 /data/sonarqube/cbp
+or
+chmod 777 /data/sonarqube/cbp -R
+```
 
 
 
