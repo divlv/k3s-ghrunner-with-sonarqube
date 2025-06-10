@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Finding GitHub Runner logs: ###########################################"
+echo "kubectl -n githubrunner logs $(kubectl -n githubrunner get pods -l app=trm-runner-1 -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow"
+echo "###################################################################"
+
+kubectl -n githubrunner logs $(kubectl -n githubrunner get pods -l app=trm-runner-1 -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow
