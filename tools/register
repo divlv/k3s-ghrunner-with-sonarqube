@@ -4,6 +4,10 @@ echo "###################################################################"
 echo "Registering K3S helper tools..."
 echo "###################################################################"
 
+# Shortcut to k3s manifests directory
+ln -s /var/lib/rancher/k3s/server/manifests /opt/manifests
+
+
 # Don't forget to make the scripts executable via GIT: git add --chmod=+x k3ssonarqubelogs
 # Cleanup part:
 
