@@ -1,7 +1,15 @@
 #!/bin/bash
 
+COMMAND_TO_EXECUTE="kubectl -n githubrunner logs \$(kubectl -n githubrunner get pods -l app=trm-runner-1 -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow"
+
+if [[ "$1" == "--help" || "$1" == "-h" || "$1" == "--dry" || "$1" == "--dry-run" || "$1" == "-d" ]]; then
+  echo "The script would execute the following command:"
+  echo "$COMMAND_TO_EXECUTE"
+  exit 0
+fi
+
 echo "Finding GitHub Runner logs: ###########################################"
-echo "kubectl -n githubrunner logs $(kubectl -n githubrunner get pods -l app=trm-runner-1 -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow"
+echo "$COMMAND_TO_EXECUTE"
 echo "###################################################################"
 
-kubectl -n githubrunner logs $(kubectl -n githubrunner get pods -l app=trm-runner-1 -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow
+eval "$COMMAND_TO_EXECUTE"

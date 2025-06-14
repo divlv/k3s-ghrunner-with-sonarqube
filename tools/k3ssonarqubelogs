@@ -1,7 +1,15 @@
 #!/bin/bash
 
-echo "Finding SonarQube logs: ###########################################"
-echo "kubectl -n sonarqube logs $(kubectl -n sonarqube get pods -l app=sonarqube -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow"
+COMMAND_TO_EXECUTE="kubectl -n sonarqube logs \$(kubectl -n sonarqube get pods -l app=sonarqube -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow"
+
+if [[ "$1" == "--help" || "$1" == "-h" || "$1" == "--dry" || "$1" == "--dry-run" || "$1" == "-d" ]]; then
+  echo "The script would execute the following command:"
+  echo "$COMMAND_TO_EXECUTE"
+  exit 0
+fi
+
+echo "Finding GitHub Runner logs: ###########################################"
+echo "$COMMAND_TO_EXECUTE"
 echo "###################################################################"
 
-kubectl -n sonarqube logs $(kubectl -n sonarqube get pods -l app=sonarqube -o jsonpath='{.items[0].metadata.name}') --tail=100 --follow
+eval "$COMMAND_TO_EXECUTE"
