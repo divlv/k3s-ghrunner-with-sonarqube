@@ -1,0 +1,14 @@
+# postgresql-headless-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  namespace: sonarqube
+  labels: { app: postgres }
+spec:
+  clusterIP: None # Make Service headless. Headless service allows direct access to the pods
+  selector: { app: postgres }
+  ports:
+    - name: tcp-postgres
+      port: 5432
+      targetPort: 5432

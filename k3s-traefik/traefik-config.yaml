@@ -1,5 +1,11 @@
 #
-# /var/lib/rancher/k3s/server/manifests/traefik-config.yaml
+# Copy this file to /var/lib/rancher/k3s/server/manifests/traefik-config.yaml
+#
+# When the file is copied to the manifests directory, K3s will automatically apply it and create the Traefik configuration.
+#
+# In case, we need to force re-apply the configuration, we can delete the Traefik pod, and it will be recreated with the new configuration:
+# k3s kubectl -n kube-system delete pod -l app.kubernetes.io/name=traefik
+#
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -32,8 +38,8 @@ spec:
       - "--certificatesresolvers.default.acme.email=dima@zaharov.info"
       - "--certificatesresolvers.default.acme.storage=/data/acme.json"
       - "--certificatesresolvers.default.acme.httpChallenge.entrypoint=web"
-      #DEV - "--certificatesresolvers.default.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.default.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.default.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      #PROD- "--certificatesresolvers.default.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
     ports:
       web:
         port: 8000
